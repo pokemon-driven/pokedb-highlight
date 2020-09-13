@@ -67,10 +67,8 @@ async function run() {
 
 ${list.map((p) => `${p.order}. ${p.name}`).join('\n')}
 
----
-
 データソース: https://swsh.pokedb.tokyo/pokemon/list
-${res.data.permalink_url.replace('gyazo', 'i.gyazo')}.png`
+スクショ   : ${res.data.permalink_url.replace('gyazo', 'i.gyazo')}.png`
     console.log(t)
     await axios.post(
       Environments.SLACK_WEBHOOK_URL,
