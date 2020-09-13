@@ -1,6 +1,6 @@
 # pokedb-highlight
 
-[![Image from Gyazo](https://i.gyazo.com/a3cdc6aca5c3cf0b23533515172d70e7.png)](https://gyazo.com/a3cdc6aca5c3cf0b23533515172d70e7)
+[![Image from Gyazo](https://i.gyazo.com/58be932b8e1fd25fe4707f081533d3df.png)](https://gyazo.com/58be932b8e1fd25fe4707f081533d3df)
 
 Pokemon usage ranking crawl bot for Slack/Discord
 
