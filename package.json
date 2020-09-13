@@ -1,0 +1,19 @@
+{
+  "name": "pokedb-highlight",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/pokemon-driven/pokedb-highlight.git",
+  "author": "Takuma HANATANI <mail@potato4d.me>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/form-data": "^2.5.0",
+    "@types/puppeteer": "^3.0.2",
+    "axios": "^0.20.0",
+    "dayjs": "^1.8.35",
+    "form-data": "^3.0.0",
+    "puppeteer": "^5.3.0",
+    "string-to-stream": "^3.0.1",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
+  }
+}
