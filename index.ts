@@ -7,7 +7,8 @@ import { promises as fs } from 'fs'
 const Environments = {
   GYAZO_ACCESS_TOKEN: process.env.GYAZO_ACCESS_TOKEN,
   SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
-  IS_LOCAL_MODE: !!process.env.IS_LOCAL_MODE
+  IS_LOCAL_MODE: !!process.env.IS_LOCAL_MODE,
+  WITH_TEXT: process.env.WITH_TEXT
 } as const
 
 type UploadAPIResponse = {
@@ -26,7 +27,7 @@ async function run() {
 
   const browser = await puppeteer.launch({
     defaultViewport: {
-      width: 1440,
+      width: 1023,
       height: 910,
     },
     args: ['--window-size=1440,1040'],
@@ -47,7 +48,23 @@ async function run() {
       }
     })
   )
-  await page.addStyleTag({ content: '.column:nth-child(n+51) { display: none; }' })
+  await page.addStyleTag({ content: `
+hr + .content {
+  padding 16px;
+}
+
+.column:nth-child(n+33) {
+  display: none;
+}
+
+.pokemon-icon {
+  transform: scale(1.2);
+  margin-right: 10px;
+}
+
+.pokemon-ranking-name {
+  font-size: 18px !important;
+}` })
   const ss = await (await page.$('hr + .content'))!.screenshot()
 
   if (Environments.IS_LOCAL_MODE) {
@@ -73,11 +90,11 @@ async function run() {
     const t = `${dayjs().format(
       'YYYY/MM/DD HH:mm'
     )} のシングルバトルポケモン使用率ランキング
-
-${list.map((p) => `${p.order}. ${p.name}`).join('\n')}
-
+${
+  Environments.WITH_TEXT ? `\n${list.map((p) => `${p.order}. ${p.name}`).join('\n')}\n` : ''
+}
 データソース: https://swsh.pokedb.tokyo/pokemon/list
-スクショ   : ${res.data.permalink_url.replace('gyazo', 'i.gyazo')}.png`
+スクショ　　: ${res.data.permalink_url.replace('gyazo', 'i.gyazo')}.png`
     console.log(t)
     await axios.post(
       Environments.SLACK_WEBHOOK_URL,
