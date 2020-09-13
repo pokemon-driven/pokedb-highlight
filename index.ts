@@ -2,10 +2,12 @@ import puppeteer from 'puppeteer'
 import dayjs from 'dayjs'
 import axios from 'axios'
 import FormData from 'form-data'
+import { promises as fs } from 'fs'
 
 const Environments = {
   GYAZO_ACCESS_TOKEN: process.env.GYAZO_ACCESS_TOKEN,
   SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
+  IS_LOCAL_MODE: !!process.env.IS_LOCAL_MODE
 } as const
 
 type UploadAPIResponse = {
@@ -45,7 +47,14 @@ async function run() {
       }
     })
   )
-  const ss = await page.screenshot()
+  await page.addStyleTag({ content: '.column:nth-child(n+51) { display: none; }' })
+  const ss = await (await page.$('hr + .content'))!.screenshot()
+
+  if (Environments.IS_LOCAL_MODE) {
+    await fs.writeFile('ss.png', ss)
+    process.exit(0)
+  }
+
   try {
     const form = new FormData()
     form.append('access_token', `${Environments.GYAZO_ACCESS_TOKEN}`)
